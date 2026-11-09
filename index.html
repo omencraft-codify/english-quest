@@ -188,6 +188,39 @@ button.plate:active{transform:translateY(4px);box-shadow:0 1px 0 var(--steel-edg
 .card.r3{border-color:var(--gold);background:linear-gradient(160deg,#4a3d10,#1a2356 55%,#3b1d50)} .card.r3 .rr{color:var(--gold)}
 .card.r3::after{content:"";position:absolute;inset:-50%;background:linear-gradient(115deg,transparent 40%,#ffffff55 50%,transparent 60%);animation:shine 2.8s ease-in-out infinite}
 
+/* block battle */
+.stage.bonus{grid-column:1/-1;background:linear-gradient(135deg,#fff7d9,#ffe39a);box-shadow:0 5px 0 var(--volt-dark),0 8px 16px #0006}
+.stage.bonus .sn{color:var(--red-dark)}
+.bboard{gap:12px;padding:16px 12px 18px;min-height:0}
+.btarget{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap;justify-content:center}
+.btarget .emo{font-size:48px}
+.btarget .ja{font-size:16px}
+.btarget .speak{width:48px;height:48px;font-size:20px}
+.tw{display:flex;gap:4px}
+.tw b{display:grid;place-items:center;width:40px;height:46px;border-radius:8px;background:var(--steel);color:var(--ink);font-family:var(--f-word);font-weight:800;font-size:28px;box-shadow:0 3px 0 var(--steel-edge)}
+.well{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;width:100%;max-width:360px;padding:8px;background:#0d1230;border-radius:14px;border:3px solid var(--line);transition:opacity .2s}
+.well.paused{opacity:.35}
+.wellrow{display:flex;gap:10px;align-items:flex-start;justify-content:center;width:100%}
+.wellrow .well{flex:1 1 0}
+.nextbox{flex:none;width:68px;padding:8px 8px 10px;background:#0d1230;border:3px solid var(--line);border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--f-hud);font-size:12px;letter-spacing:.12em;color:var(--volt)}
+.nextbox .cell{width:100%;font-size:28px}
+.cell{aspect-ratio:1;border-radius:7px;background:#ffffff0a;font-family:var(--f-word);font-weight:800;font-size:clamp(18px,5.4vw,28px);line-height:1;display:grid;place-items:center;color:var(--ink);padding:0;min-width:0}
+.cell.blk{background:linear-gradient(#fff,var(--steel));box-shadow:inset 0 -4px 0 var(--steel-edge)}
+.cell.junk{background:#56628f;color:#cdd4ee;box-shadow:inset 0 -4px 0 #3c4670}
+.cell.live{background:linear-gradient(#fff6c8,var(--volt));box-shadow:inset 0 -4px 0 var(--volt-dark),0 0 14px #ffd23a99}
+.cell.live.bomb{background:linear-gradient(#ff8a95,var(--red));box-shadow:inset 0 -4px 0 var(--red-dark),0 0 14px #ff4d5e99}
+.cell.ghost{outline:2px dashed #ffd23a99;outline-offset:-4px}
+.cell.flash{background:var(--good-bg);box-shadow:0 0 16px var(--good);animation:pop .3s}
+.bctl{display:flex;gap:14px;justify-content:center}
+.bctl button{width:76px;height:58px;font-size:24px}
+#block .hud{padding:2px 6px 0}
+#block .side .bot{--s:58px}
+#block .vs{font-size:22px}
+#block .board{margin-top:8px}
+.well{max-width:min(360px,max(230px,calc((100dvh - 470px)*.78)))}
+.keys{margin:0;font-size:13px;color:var(--fg-soft);text-align:center}
+.binfo{flex:1;text-align:center;font-family:var(--f-hud);font-size:16px}
+
 /* parents */
 .panel{padding:18px;display:flex;flex-direction:column;gap:10px;background:var(--panel);border:2px solid var(--line);border-radius:16px;margin-bottom:16px}
 .panel h3{margin:0;font-size:18px}
@@ -260,6 +293,31 @@ label.tog input{width:22px;height:22px}
 
   <section id="result" hidden></section>
 
+  <section id="block" hidden>
+    <div class="playtop">
+      <button class="iconbtn plate" id="bQuit" aria-label="ホームに もどる">✕</button>
+      <div class="binfo" id="bInfo"></div>
+      <button class="iconbtn plate" id="bPause" aria-label="ポーズ">⏸</button>
+    </div>
+    <div class="hud">
+      <div class="side"><div id="bMe"></div><span class="nm" id="bMeName"></span></div>
+      <div class="vs">VS</div>
+      <div class="side"><div id="bFoe"></div><span class="nm" id="bFoeName"></span><div class="hp" id="bHP"></div></div>
+      <div class="burst" id="bBurst"></div>
+    </div>
+    <div class="board bboard">
+      <div class="btarget" id="bTarget"></div>
+      <p class="ask" style="font-size:15px">この ことばを よこ 1れつに ならべて けせ!</p>
+      <div class="wellrow"><div class="well" id="well"></div><div class="nextbox" aria-label="つぎの ブロック"><span>NEXT</span><div class="cell" id="bNext"></div></div></div>
+      <div class="bctl">
+        <button class="plate" id="bLeft" aria-label="ひだりへ">◀</button>
+        <button class="plate" id="bDrop" aria-label="おとす">▼</button>
+        <button class="plate" id="bRight" aria-label="みぎへ">▶</button>
+      </div>
+      <p class="keys">← → で うごかす ・ ↓ か スペースで おとす ・ マスを タップしても OK ・ 💣で 1れつ けせる</p>
+    </div>
+  </section>
+
   <section id="dex" class="sec" hidden>
     <div class="playtop" style="margin-bottom:14px"><button class="iconbtn plate" data-home aria-label="ホームに もどる">←</button><h2>🃏 カード コレクション</h2></div>
     <p class="sub">いっかいで せいかいすると カードが レベルアップ! ブロンズ → シルバー → ゴールド</p>
@@ -313,7 +371,7 @@ const BOT_COLORS=['#3fd6ff','#ff4d5e','#ffd23a','#3ee08a','#b98cff'];
 const RANKS=[[0,'ルーキー'],[20,'ファイター'],[60,'エース'],[120,'チャンピオン'],[200,'レジェンド']];
 const BOSS_HP=5;
 const KEY='english-puzzle-quest-v1';
-const fresh=()=>({v:1,words:{},best:{},stars:0,streak:0,lastDay:'',unlockAll:false,sound:true,bot:{name:'BOLT',color:BOT_COLORS[0]}});
+const fresh=()=>({v:1,words:{},best:{},stars:0,streak:0,lastDay:'',unlockAll:false,sound:true,blockBest:0,bot:{name:'BOLT',color:BOT_COLORS[0]}});
 let S=load();
 function load(){try{const t=localStorage.getItem(KEY);if(t){const o=JSON.parse(t);if(o&&typeof o.words==='object'){const s=Object.assign(fresh(),o);s.bot=Object.assign(fresh().bot,o.bot||{});return s}}}catch(e){}return fresh()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -340,7 +398,7 @@ function say(t){if(!S.sound)return;try{speechSynthesis.cancel();const u=new Spee
 const reduced=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* screens */
-function show(id){['home','play','result','dex','parent'].forEach(x=>$('#'+x).hidden=x!==id);window.scrollTo(0,0);if(id==='home')renderHome();if(id==='dex')renderDex();if(id==='parent')renderParent()}
+function show(id){if(id!=='block')stopBlocks();['home','play','result','dex','parent','block'].forEach(x=>$('#'+x).hidden=x!==id);window.scrollTo(0,0);if(id==='home')renderHome();if(id==='dex')renderDex();if(id==='parent')renderParent()}
 function header(){$('#hStars').textContent=S.stars;$('#hStreak').textContent=S.streak;$('#sndBtn').textContent=S.sound?'🔊':'🔇'}
 
 function renderHome(){header();
@@ -354,7 +412,7 @@ function renderHome(){header();
   ${botHTML(p.boss.c,{boss:true,badge:ok?p.boss.b:''})}
   <span class="sn">STAGE ${i+1}</span><span class="pn">${p.en}</span><span class="bn">${ok?p.boss.n+' ・ '+p.ja:'🔒 まえの ステージで ★2つ'}</span>
   <span class="ps">${ok?`<span class="stars">${starStr(S.best[p.id]||0)}</span><span>🃏 ${got}/${p.words.length}</span>`:''}</span>
-  ${won?'<span class="win">WIN</span>':''}</button>`}).join('')}
+  ${won?'<span class="win">WIN</span>':''}</button>`}).join('')+`<button class="plate stage bonus" id="toBlock">${botHTML(TITAN.c,{boss:true,badge:TITAN.b})}<span class="sn">BONUS STAGE</span><span class="pn">Block Battle</span><span class="bn">${TITAN.n} ・ ことばブロック</span><span class="ps">BEST 🧱 ${S.blockBest||0}/${BOSS_HP}</span></button>`}
 
 /* round */
 let R=null;
@@ -369,7 +427,7 @@ function countdown(done){if(reduced()){done();return}const ov=$('#count'),tx=$('
 const cur=()=>R.qs[R.i];
 function renderHP(){$('#hp').innerHTML=Array.from({length:BOSS_HP},(_,k)=>`<i class="${k>=R.hp?'gone':''}"></i>`).join('')}
 function renderDots(){$('#dots').innerHTML=R.qs.map((q,k)=>`<i class="${k<R.i?(q.ok?'ok':'miss'):k===R.i?'now':''}"></i>`).join('');$('#combo').textContent=R.combo>=2?`COMBO ×${R.combo}`:''}
-function burst(t){const b=$('#burst');b.textContent=t;b.classList.remove('go');void b.offsetWidth;b.classList.add('go')}
+function burst(t,b=$('#burst')){b.textContent=t;b.classList.remove('go');void b.offsetWidth;b.classList.add('go')}
 function bump(el){const b=el.querySelector('.bot');if(!b)return;b.classList.remove('hit','idle');void b.offsetWidth;b.classList.add('hit');setTimeout(()=>{b.classList.remove('hit');if(!b.classList.contains('ko'))b.classList.add('idle')},420)}
 
 function renderQ(){const q=cur();q.first=true;q.done=false;renderDots();const w=q.w,st=$('#stage');
@@ -422,11 +480,11 @@ function finishQ(){const q=cur(),w=q.w;q.done=true;q.ok=q.first;
 function nextQ(){if(R.i<R.qs.length-1){R.i++;renderQ()}else endRound()}
 
 function today(d=new Date()){return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()}
+function touchStreak(){const t=today(),y=new Date();y.setDate(y.getDate()-1);if(S.lastDay!==t){S.streak=S.lastDay===today(y)?S.streak+1:1;S.lastDay=t}}
 function endRound(){const n=R.qs.length,c=R.correct,stars=c>=n-1?3:c>=5?2:c>=1?1:0,won=R.hp===0;
  const id=R.p.id,wasUnlocked=PACKS.map((_,i)=>unlocked(i));
  S.best[id]=Math.max(S.best[id]||0,stars);
- const t=today(),y=new Date();y.setDate(y.getDate()-1);
- if(S.lastDay!==t){S.streak=S.lastDay===today(y)?S.streak+1:1;S.lastDay=t}
+ touchStreak();
  save();header();
  const newly=PACKS.findIndex((p,i)=>!wasUnlocked[i]&&unlocked(i)),r1=rankOf(S.stars);
  $('#result').innerHTML=`<div class="result">
@@ -455,17 +513,98 @@ function restore(txt){try{const o=JSON.parse(txt);if(!o||typeof o.words!=='objec
 let armTimer=null;
 function resetArm(on){const b=$('#bReset');clearTimeout(armTimer);if(on){b.classList.add('armed');b.textContent='Press again to erase everything';armTimer=setTimeout(()=>resetArm(false),4000)}else{b.classList.remove('armed');b.textContent='Reset all progress'}b.dataset.armed=on?'1':''}
 
+/* block battle */
+const BW=7,BH=9,TITAN={n:'TETRA-GOLEM',c:'#ff9a3a',b:'🧱'};
+const ABC='abcdefghijklmnopqrstuvwxyz';
+let B=null;
+function blockWords(){return PACKS.filter((p,i)=>unlocked(i)).flatMap(p=>p.words).filter(w=>w.en.length<=6)}
+function stopBlocks(){if(B)clearTimeout(B.timer);B=null}
+function startBlocks(){stopBlocks();B={grid:Array.from({length:BH},()=>Array(BW).fill(null)),hp:BOSS_HP,cleared:[],speed:950,n:0,bag:[],piece:null,over:false,paused:false,busy:false,rank0:rankOf(S.stars),recent:[],timer:null};
+ const me=B;show('block');B=me;
+ $('#bMe').innerHTML=botHTML(S.bot.color,{cls:'idle'});$('#bMeName').textContent=botName();
+ $('#bFoe').innerHTML=botHTML(TITAN.c,{boss:true,badge:TITAN.b,cls:'idle'});$('#bFoeName').textContent=TITAN.n;
+ $('#bPause').textContent='⏸';renderBHP();newTarget();renderWell();
+ countdown(()=>{if(B!==me)return;spawn();loopB()})}
+function renderBHP(){$('#bHP').innerHTML=Array.from({length:BOSS_HP},(_,k)=>`<i class="${k>=B.hp?'gone':''}"></i>`).join('');$('#bInfo').textContent=`🧱 ${B.cleared.length} / ${BOSS_HP}`}
+function newTarget(){const ws=blockWords(),seen=ws.filter(w=>lvl(w)>0);let pool=(seen.length>=3?seen:ws).filter(w=>!B.recent.includes(w.en));if(!pool.length)pool=ws;
+ const w=pick(pool);B.target=w;B.recent=[w.en,...B.recent].slice(0,4);B.bag=[];B.next=null;
+ $('#bTarget').innerHTML=`<span class="emo">${w.e}</span><span class="tw">${w.en.split('').map(c=>`<b>${c}</b>`).join('')}</span><span class="ja">${w.ja}</span><button class="speak" data-say="${w.en}" aria-label="きく">🔊</button>`;
+ setTimeout(()=>say(w.en),200)}
+function nextPiece(){B.n++;if(B.n%9===0)return{bomb:true};
+ if(!B.bag.length){const ls=B.target.en.split('');const junk=ABC.split('').filter(c=>!ls.includes(c));B.bag=shuffle([...ls,pick(junk)])}
+ return{ch:B.bag.pop()}}
+function canAt(x,y){return x>=0&&x<BW&&y>=0&&y<BH&&!B.grid[y][x]}
+function spawn(){const p=B.next||nextPiece();B.next=nextPiece();p.x=3;p.y=0;if(B.grid[0][3]){endBlocks(false);return}B.piece=p;renderWell()}
+function loopB(){if(!B)return;clearTimeout(B.timer);const me=B;B.timer=setTimeout(()=>{if(B!==me||B.over)return;if(!B.paused)stepB();loopB()},B.speed)}
+function stepB(){const p=B&&B.piece;if(!p||B.busy)return;if(canAt(p.x,p.y+1)){p.y++;renderWell()}else lockB()}
+const live=()=>B&&B.piece&&!B.paused&&!B.over&&!B.busy;
+function moveB(dx){if(!live())return;const p=B.piece;if(canAt(p.x+dx,p.y)){p.x+=dx;sTap();renderWell()}}
+function dropB(){if(!live())return;const p=B.piece;while(canAt(p.x,p.y+1))p.y++;lockB()}
+function tapCol(c){if(!live())return;const p=B.piece,d=Math.sign(c-p.x);while(p.x!==c&&canAt(p.x+d,p.y))p.x+=d;renderWell();dropB()}
+function togglePause(){if(!B||B.over)return;B.paused=!B.paused;$('#bPause').textContent=B.paused?'▶':'⏸';renderWell()}
+function lockB(){const p=B.piece;B.piece=null;
+ if(p.bomb){for(let y=0;y<BH;y++)B.grid[y][p.x]=null;for(const dx of[-1,1]){const x=p.x+dx;if(x>=0&&x<BW)B.grid[p.y][x]=null}gravity();tone([180,120,90],.12,'sawtooth',.12);burst('BOMB!',$('#bBurst'))}
+ else{B.grid[p.y][p.x]={ch:p.ch};tone([330],.05,'square',.06)}
+ if(!checkClear())spawn()}
+function gravity(){for(let x=0;x<BW;x++){const col=[];for(let y=BH-1;y>=0;y--)if(B.grid[y][x])col.push(B.grid[y][x]);for(let y=BH-1,k=0;y>=0;y--,k++)B.grid[y][x]=col[k]||null}}
+function checkClear(){const t=B.target.en;
+ for(let y=BH-1;y>=0;y--){const row=B.grid[y].map(c=>c?c.ch:' ').join(''),i=row.indexOf(t);if(i<0)continue;
+  for(let k=0;k<t.length;k++)B.grid[y][i+k]={ch:t[k],flash:true};B.busy=true;renderWell();wordCleared();
+  const me=B;setTimeout(()=>{if(B!==me)return;for(let k=0;k<t.length;k++)B.grid[y][i+k]=null;gravity();B.busy=false;
+   if(B.hp<=0){renderWell();endBlocks(true)}else{newTarget();spawn()}},700);
+  return true}
+ return false}
+function wordCleared(){const w=B.target;B.cleared.push(w);S.words[w.en]=Math.min(3,lvl(w)+1);S.stars++;save();header();
+ const wasAlive=B.hp>0;B.hp=Math.max(0,B.hp-1);renderBHP();bump($('#bFoe'));say(w.en);
+ if(wasAlive&&B.hp===0){burst('K.O.!',$('#bBurst'));sWin();setTimeout(()=>{const b=$('#bFoe .bot');if(b){b.classList.remove('idle','hit');b.classList.add('ko')}},420)}
+ else{burst('LINE CLEAR!',$('#bBurst'));sSuper()}
+ B.speed=Math.max(450,B.speed-90)}
+function renderWell(){if(!B)return;const p=B.piece,t=B.target?B.target.en:'';let gy=-1;if(p){gy=p.y;while(canAt(p.x,gy+1))gy++}
+ let h='';for(let y=0;y<BH;y++)for(let x=0;x<BW;x++){const c=B.grid[y][x];let cls='cell',tx='';
+  if(p&&p.x===x&&p.y===y){cls='cell live'+(p.bomb?' bomb':'');tx=p.bomb?'💣':p.ch}
+  else if(c){cls+=' blk'+(c.flash?' flash':t.includes(c.ch)?'':' junk');tx=c.ch}
+  else if(p&&p.x===x&&gy===y)cls+=' ghost';
+  h+=`<button class="${cls}" data-col="${x}" tabindex="-1" aria-hidden="true">${tx}</button>`}
+ const nx=B.next,nb=$('#bNext');nb.className='cell'+(nx?(nx.bomb?' live bomb':' blk'+(t.includes(nx.ch)?'':' junk')):'');nb.textContent=nx?(nx.bomb?'💣':nx.ch):'';
+ const wl=$('#well');wl.innerHTML=h;wl.classList.toggle('paused',!!B.paused)}
+function endBlocks(won){if(!B||B.over)return;clearTimeout(B.timer);B.over=true;
+ const list=B.cleared,n=list.length,stars=n>=BOSS_HP?3:n>=3?2:n>=1?1:0,rank0=B.rank0;
+ S.blockBest=Math.max(S.blockBest||0,n);touchStreak();save();header();const r1=rankOf(S.stars);
+ $('#result').innerHTML=`<div class="result">
+  ${won?botHTML(S.bot.color,{cls:'idle'}):botHTML(TITAN.c,{boss:true,badge:TITAN.b,cls:'idle'})}
+  <h2>${won?'YOU WIN!':'GAME OVER'}</h2>
+  <p class="sub">${won?`${esc(botName())} が ${TITAN.n} を たおした!`:'ブロックが いっぱいに なった! もういちど チャレンジ!'}</p>
+  <div class="bigstars" aria-label="ほし ${stars}こ">${starStr(stars)}</div>
+  <p style="margin:0">けした ことば: <b class="hudf" style="font-size:22px">${n} / ${BOSS_HP}</b></p>
+  ${r1>rank0?`<div class="rankup">⬆ ランクアップ! ${RANKS[r1][1]} に なった!</div>`:''}
+  ${n?`<div class="rlist">${list.map(w=>`<div><span>${w.e}</span>${w.en}<span class="m">⭕</span></div>`).join('')}</div>`:''}
+  <div class="btnrow"><button class="plate" id="againBlock">🔁 もういちど</button><button class="plate primary" data-home>🏠 ホームへ</button></div></div>`;
+ show('result');if(won)party()}
+document.addEventListener('keydown',e=>{if($('#block').hidden||!B||!$('#count').hidden)return;const k=e.key;
+ if(k==='ArrowLeft'){moveB(-1);e.preventDefault()}else if(k==='ArrowRight'){moveB(1);e.preventDefault()}
+ else if(k==='ArrowDown'){if(live())stepB();e.preventDefault()}else if(k===' '||k==='ArrowUp'){dropB();e.preventDefault()}
+ else if(k==='p'||k==='P'||k==='Escape'){togglePause()}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&B&&!B.paused&&!B.over)togglePause()});
+
 /* events */
 document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;
  if(t.dataset.say){say(t.dataset.say);return}
  if(t.dataset.color){S.bot.color=t.dataset.color;save();sTap();renderHome();return}
  if(t.dataset.pack!==undefined){const i=+t.dataset.pack;if(unlocked(i)){sTap();startRound(i)}else{sBad();t.animate&&t.animate([{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'none'}],{duration:300})}return}
+ if(t.dataset.col!==undefined){tapCol(+t.dataset.col);return}
  if(t.dataset.choice){choose(t);return}
  if(t.dataset.tile!==undefined){tapTile(+t.dataset.tile);return}
  if(t.dataset.slot!==undefined){tapSlot(+t.dataset.slot);return}
  if(t.hasAttribute('data-home')){show('home');return}
  switch(t.id){
   case 'hintBtn':hint();break;
+  case 'toBlock':sTap();startBlocks();break;
+  case 'againBlock':startBlocks();break;
+  case 'bQuit':try{speechSynthesis.cancel()}catch(_){}show('home');break;
+  case 'bPause':togglePause();t.blur();break;
+  case 'bLeft':moveB(-1);t.blur();break;
+  case 'bRight':moveB(1);t.blur();break;
+  case 'bDrop':dropB();t.blur();break;
   case 'nextBtn':nextQ();break;
   case 'again':startRound(R.pi);break;
   case 'quit':try{speechSynthesis.cancel()}catch(_){}show('home');break;
